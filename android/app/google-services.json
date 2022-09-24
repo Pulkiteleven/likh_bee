@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "938735929616",
+    "project_id": "likhbee",
+    "storage_bucket": "likhbee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938735929616:android:f9f89907ee531931623d95",
+        "android_client_info": {
+          "package_name": "com.inertia.likh_bee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938735929616-qcufmk3u099u3hpgaq64a94qqt25mokg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.inertia.likh_bee",
+            "certificate_hash": "34f81d77d1c750b71adc973d55c5f0380cd74aac"
+          }
+        },
+        {
+          "client_id": "938735929616-tsjjfgg51ju7ecl433o7a09ia6alujsr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGBu8mWMFcurAcXqYO-sYwqWOXXCqqMA8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938735929616-tsjjfgg51ju7ecl433o7a09ia6alujsr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "938735929616-8mkm7flmbbimajg2cjb0heuap4gog716.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.inertia.likhBee"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

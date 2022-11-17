@@ -15,6 +15,8 @@ import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:likh_bee/Usefull/Functions.dart';
 import 'package:likh_bee/Work/OneWork.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 
 class OurTeam extends StatefulWidget {
@@ -46,126 +48,42 @@ class _OurTeamState extends State<OurTeam> {
             SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 20.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  mainText("Our Team", darktext, 20.0, FontWeight.bold, 1),
+                  ClipOval(
+                      child: Image.asset('Assets/inertia.jpg',width: 100.0,)),
+                  mainText("The App is Developed by team Inert!a", darktext, 10.0, FontWeight.normal, 1),
+                 SizedBox(height: 30.0,),
+                  mainText("Me!", mainColor, 15.0, FontWeight.bold, 1),
 
-                  SizedBox(height: 15.0,),
-
+              SizedBox(height: 10.0,),
+                  ClipOval(
+                      child: Image.asset('Assets/pulkit.jpg',width: 80.0,)),
+                  SizedBox(height: 5.0,),
+                  mainText("Pulkit Dubey", darktext, 20.0, FontWeight.bold, 1),
+                  SizedBox(height: 5.0,),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 20.0,
-                            child: ClipOval(
-                              child: Image.asset('Assets/icon.png',fit: BoxFit.cover,),
-                            ),
-                          ),
-                          SizedBox(height: 5.0,),
-                          mainText("Divyanshi Gupta", darktext, 13.0, FontWeight.normal, 1),
-                          mainText("Markeitng Manager", lightText, 10.0, FontWeight.normal, 1),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 20.0,
-                            child: ClipOval(
-                              child: Image.asset('Assets/icon.png',fit: BoxFit.cover,),
-                            ),
-                          ),
-                          SizedBox(height: 5.0,),
-                          mainText("Shivi Shukla", darktext, 13.0, FontWeight.normal, 1),
-                          mainText("Media and Content", lightText, 10.0, FontWeight.normal, 1),
-                        ],
-                      ),
+                      GestureDetector(onTap: (){
+                        _launchUrl("https://www.linkedin.com/in/pulkit-dubey-75b703224/");
+                      },
+                        child: Image.asset('Assets/linkedin.png',width: 30.0,),),
+                      SizedBox(width: 20.0,),
+                      GestureDetector(onTap: (){
+                        _launchUrl("https://www.instagram.com/kylo_ren__20/");
+                      },
+                        child: Image.asset('Assets/insta.png',width: 30.0,),),
                     ],
-                  ),
-                  SizedBox(height: 10.0,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 20.0,
-                            child: ClipOval(
-                              child: Image.asset('Assets/icon.png',fit: BoxFit.cover,),
-                            ),
-                          ),
-                          SizedBox(height: 5.0,),
-                          mainText("Mukti Markam", darktext, 13.0, FontWeight.normal, 1),
-                          mainText("Graphic Designer", lightText, 10.0, FontWeight.normal, 1),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 20.0,
-                            child: ClipOval(
-                              child: Image.asset('Assets/icon.png',fit: BoxFit.cover,),
-                            ),
-                          ),
-                          SizedBox(height: 5.0,),
-                          mainText("Pragya Shrivastav", darktext, 13.0, FontWeight.normal, 1),
-                          mainText("Graphics Designer", lightText, 10.0, FontWeight.normal, 1),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.0,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 20.0,
-                            child: ClipOval(
-                              child: Image.asset('Assets/icon.png',fit: BoxFit.cover,),
-                            ),
-                          ),
-                          SizedBox(height: 5.0,),
-                          mainText("Yashwari", darktext, 13.0, FontWeight.normal, 1),
-                          mainText("Media and Marketing", lightText, 10.0, FontWeight.normal, 1),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 20.0,
-                            child: ClipOval(
-                              child: Image.asset('Assets/icon.png',fit: BoxFit.cover,),
-                            ),
-                          ),
-                          SizedBox(height: 5.0,),
-                          mainText("Salil Sharma", darktext, 13.0, FontWeight.normal, 1),
-                          mainText("Web Developer", lightText, 10.0, FontWeight.normal, 1),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.0,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 20.0,
-                            child: ClipOval(
-                              child: Image.asset('Assets/icon.png',fit: BoxFit.cover,),
-                            ),
-                          ),
-                          SizedBox(height: 5.0,),
-                          mainText("Pulkit Developer", darktext, 13.0, FontWeight.normal, 1),
-                          mainText("App Developer", lightText, 10.0, FontWeight.normal, 1),
-                        ],
-                      ),
-                    ],
-                  ),
+                  )
+              //     Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         card(name: "Assets/pulkit.jpg", title: "Pulkit Dubey", pos: "App", url: "https://www.linkedin.com/in/pulkit-dubey-75b703224/"),
+              // ]
+              //     ),
                 ],
               ),
             ),
@@ -176,3 +94,68 @@ class _OurTeamState extends State<OurTeam> {
     );
   }
 }
+
+class card extends StatelessWidget {
+  String name;
+  String title;
+  String pos;
+  String url;
+  card({Key? key,required this.name,required this.title,required this.pos,required this.url}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 5.0),
+      width: MediaQuery.of(context).size.width - 80,
+      child: Card(
+        elevation: 0.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5.0,vertical: 20.0),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 40.0,
+                child: ClipOval(
+                    child: Image.asset(name,fit: BoxFit.cover,)),
+              ),
+              SizedBox(width: 5.0,),
+              Column(
+                children: [
+                  mainText(title, darktext, 20.0, FontWeight.bold,1),
+                  SizedBox(height: 10.0,),
+                  Row(
+                    children: [
+                      GestureDetector(onTap: (){
+                        _launchUrl(url);
+                      },
+                      child: Image.asset('Assets/linkedin.png',width: 30.0,),),
+                      SizedBox(width: 20.0,),
+                      GestureDetector(onTap: (){
+                        _launchUrl("https://www.instagram.com/kylo_ren__20/");
+                      },
+                      child: Image.asset('Assets/insta.png',width: 30.0,),),
+                    ],
+                  )
+                ],
+              ),
+              SizedBox(height: 3.0,),
+
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+Future<void> _launchUrl(String _url) async {
+print(_url);
+if (!await launchUrl(Uri.parse(_url))) {
+throw 'Could not launch $_url';
+}
+}
+

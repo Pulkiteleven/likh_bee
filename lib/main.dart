@@ -3,10 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:likh_bee/Auth/LoginWithMobile.dart';
 import 'package:likh_bee/Backend/backend.dart';
+import 'package:likh_bee/Chatee/Chat.dart';
 import 'package:likh_bee/GetStarted/Avatar.dart';
 import 'package:likh_bee/Usefull/Colors.dart';
 import 'package:likh_bee/Usefull/Functions.dart';
 
+import 'Auth/OtpLogin.dart';
 import 'GetStarted/name.dart';
 
 
@@ -19,6 +21,7 @@ void main() async{
     // home:name()
     // home:otpLogin(),
     home:MpApp()
+    // home:chat()
     // home:avatar(data: {})
   ));
 
@@ -55,18 +58,19 @@ class _MpAppState extends State<MpApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: darkColor,
+        backgroundColor: mainColor,
         body: Stack(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('Assets/likh.png',width: 60.0,color: Colors.white,),
+                Image.asset('Assets/nlb.png',width: 200.0
+                ),
                 Row(
                   children: [
                     Spacer(),
-                    mainTextPop("LikhBee", Colors.white, 30.0, FontWeight.normal,1),
+                    mainTextPop("", Colors.white, 30.0, FontWeight.normal,1),
                     Spacer(),
                   ],
                 ),
@@ -75,7 +79,7 @@ class _MpAppState extends State<MpApp> {
             Container(
               margin: EdgeInsets.only(bottom: 20.0),
               alignment: Alignment.bottomCenter,
-              child:mainText('PAY, WRITE and HIRE',Colors.white, 18.0, FontWeight.normal,1),
+              child:mainTextPop('PAY, WRITE and HIRE',yellowColor, 18.0, FontWeight.normal,1),
 
             )
           ],

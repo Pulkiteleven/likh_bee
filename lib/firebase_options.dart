@@ -17,16 +17,19 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -49,22 +52,14 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCGBu8mWMFcurAcXqYO-sYwqWOXXCqqMA8',
-    appId: '1:938735929616:android:f9f89907ee531931623d95',
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyChUbx8crfPVAkGQJwkwx7lt9xwPaNS1nI',
+    appId: '1:938735929616:web:4cb2d1b54f927567623d95',
     messagingSenderId: '938735929616',
     projectId: 'likhbee',
+    authDomain: 'likhbee.firebaseapp.com',
+    databaseURL: 'https://likhbee-default-rtdb.firebaseio.com',
     storageBucket: 'likhbee.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAZxRvGj9tQNXE5HTXtnxO38TKculb-99U',
-    appId: '1:938735929616:ios:9670e57211f5c9cf623d95',
-    messagingSenderId: '938735929616',
-    projectId: 'likhbee',
-    storageBucket: 'likhbee.appspot.com',
-    androidClientId: '938735929616-qcufmk3u099u3hpgaq64a94qqt25mokg.apps.googleusercontent.com',
-    iosClientId: '938735929616-8mkm7flmbbimajg2cjb0heuap4gog716.apps.googleusercontent.com',
-    iosBundleId: 'com.inertia.likhBee',
+    measurementId: 'G-XQ47XZY070',
   );
 }

@@ -56,7 +56,7 @@ class _avatarState extends State<avatar> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: bgColor,
+        backgroundColor: yellowColor,
         body: SafeArea(
           child: Stack(
             children: [

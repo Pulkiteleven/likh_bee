@@ -59,6 +59,13 @@ dev_dependencies:
   flashy_tab_bar2: ^0.0.4
   intl: ^0.17.0
   url_launcher: ^6.1.5
+  flutter_otp_text_field: ^1.0.1
+  shimmer: ^2.0.0
+  animations: ^2.0.7
+  share_plus: ^6.2.0
+
+
+
 
 
 

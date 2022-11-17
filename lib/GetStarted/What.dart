@@ -69,12 +69,12 @@ class _whatState extends State<what> {
                           data['what'] = "Wanted to Work";
                           navScreen(avatar(data: data), context, false);
                         }, mainColor, Colors.white),
-                        SizedBox(height: 10.0,),
+                        SizedBox(height: 5.0,),
                         btnsss("Wanted to Hire", () {
                           data['work'] = false;
                           data['what'] = "Wanted to Hire";
                           navScreen(avatar(data: data), context, false);
-                        }, mainColor, Colors.white),
+                        }, yellowColor, mainColor),
 
                       ],
                     ),

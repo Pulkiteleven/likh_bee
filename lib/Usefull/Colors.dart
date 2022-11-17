@@ -3,11 +3,15 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 Color bgColor = Color(0xFFEFEFEF);
-Color darkColor = Color(0XFF0A6CBC);
-Color mainColor = Color(0xFF5299D3);
+Color darkColor = Color(0XFF011F44);
+
+Color darkblue = Color(0xFF011F44);
+Color shimmerColor = Color(0xFFE0E0E0);
+Color mainColor = Color(0xFF0059BF);
 Color lightColor = Color(0xFF58B1F9);
 
-
+Color yellowColor = Color(0xFFFFB800);
+Color lightyellowColor = Color(0xFFFFBC42);
 
 
 Color? textColor = Colors.cyan[900];

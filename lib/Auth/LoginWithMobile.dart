@@ -45,10 +45,9 @@ class _otpLoginState extends State<otpLogin> {
               height: MediaQuery.of(context).size.height * 0.35,
               color: mainColor,
               child: Image.asset(
-                'Assets/likh.png',
-                width: 20.0,
-                scale: 4.0,
-                color: Colors.white,
+                'Assets/nnlb.png',
+                width: 40.0,
+                scale: 5,
               ),
             ),
 
@@ -84,8 +83,8 @@ class _otpLoginState extends State<otpLogin> {
                                   cursorColor: Colors.white,
                                   style: TextStyle(
                                     fontFamily: 'pop',
-                                    fontSize: 13.0,
-                                    color: lightText,
+                                    fontSize: 15.0,
+                                    color: darkblue,
                                   ),
                                   decoration: InputDecoration(
                                     hintText: "Mobile Number",
@@ -134,13 +133,13 @@ class _otpLoginState extends State<otpLogin> {
 
 
                   SizedBox(height: 20.0,),
-                  btnsss("GET OTP", () { LoginwithMobile();}, mainColor, Colors.white),
+                  btnsss("GET OTP", () { LoginwithMobile();}, mainColor, yellowColor),
                   SizedBox(height: 15.0,),
                   Row(
                     children: [
                       Spacer(),
-                      mainText("Pay Write ", darktext, 13.0, FontWeight.normal, 1,),
-                      mainText("and Hire", mainColor, 13.0, FontWeight.normal, 1,),
+                      mainText("Pay Write ", darkblue, 13.0, FontWeight.normal, 1,),
+                      mainText("and Hire", yellowColor, 13.0, FontWeight.normal, 1,),
 
                       Spacer(),
                     ],

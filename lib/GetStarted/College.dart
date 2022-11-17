@@ -68,7 +68,7 @@ class _collegeState extends State<college> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: bgColor,
+        backgroundColor: yellowColor,
         body: SafeArea(
           child: Stack(
             children: [
@@ -189,15 +189,15 @@ class _listItemsState extends State<listItems> {
       style: ButtonStyle(
           foregroundColor:
           MaterialStateProperty.all<Color>(
-              Colors.white),
+              lightyellowColor),
           backgroundColor:
-          MaterialStateProperty.all<Color>(Colors.white),
+          MaterialStateProperty.all<Color>(lightyellowColor),
           shape: MaterialStateProperty.all<
               RoundedRectangleBorder>(
               RoundedRectangleBorder(
                   borderRadius:
                   BorderRadius.circular(15.0),
-                  side: BorderSide(color: Colors.white)))),
+                  side: BorderSide(color: lightyellowColor)))),
       onPressed: (){
         data['college'] = widget.title;
         navScreen(what(data: data), context, false);

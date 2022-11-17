@@ -5,12 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:likh_bee/Auth/OtpLogin.dart';
+import 'package:likh_bee/Mains/AllWork.dart';
 import 'package:likh_bee/Mains/RequestAccepted.dart';
 import 'package:likh_bee/Usefull/Avatars.dart';
 import 'package:likh_bee/Usefull/Buttons.dart';
 import 'package:likh_bee/Usefull/Colors.dart';
 import 'package:likh_bee/Usefull/Functions.dart';
 import 'package:likh_bee/Work/OneWork.dart';
+import 'package:shimmer/shimmer.dart';
+
 
 class myRequests extends StatefulWidget {
   Map data;
@@ -22,9 +25,13 @@ class myRequests extends StatefulWidget {
 
 class _myRequestsState extends State<myRequests> {
   bool isHide = false;
-  List<Widget> allRequets = [];
+  List<workItems> allRequets = [];
+  List<workItems> stockallRequets = [];
   User? user = FirebaseAuth.instance.currentUser;
 
+  List<Color> ARcolor = [mainColor,yellowColor];
+  int Acolor = 0;
+  int Rcolor = 0;
   @override
   void initState() {
     getMyRequests();
@@ -73,10 +80,38 @@ class _myRequestsState extends State<myRequests> {
 
       setState((){
         allRequets.add(i);
+        stockallRequets.add(i);
         setState((){
           isHide = false;
         });
       });
+    }
+  }
+
+  getRA(int a){
+    if(a == 0){
+      allRequets = [];
+      for(var x in stockallRequets){
+        if(x.show){
+          setState((){
+            allRequets.add(x);
+            Acolor = 1;
+            Rcolor = 0;
+          });
+        }
+      }
+    }
+    else{
+      allRequets = [];
+      for(var x in stockallRequets){
+        if(!x.show){
+          setState((){
+            allRequets.add(x);
+            Rcolor = 1;
+            Acolor = 0;
+          });
+        }
+      }
     }
   }
 
@@ -93,13 +128,34 @@ class _myRequestsState extends State<myRequests> {
               children: [
                 mainText("My Requests", darktext, 20.0, FontWeight.bold, 1),
                 SizedBox(height: 15.0,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    btnsss("Requested", () {getRA(1);}, ARcolor[Rcolor],Colors.white),
+                    btnsss("Accepted", () { getRA(0);}, ARcolor[Acolor],Colors.white),
+                  ],
+                ),
+                SizedBox(height: 10.0,),
+                Visibility(
+                    visible: isHide,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.white,
+                      highlightColor: shimmerColor,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        child: ListView.builder(itemBuilder: (_, __) {
+                          return shimmerItem();
+                        },itemCount: 3,),
+                      ),
+                    )),
+
                 Column(
                   children: allRequets,
                 )
               ],
             ),
           ),
-          loaderss(isHide, context)
+          // loaderss(isHide, context)
         ],
       ),
     );
@@ -152,6 +208,8 @@ class workItems extends StatelessWidget {
           // navScreen(oneWork(data: data), context, false);
         },
         child: Card(
+          elevation: 5.0,
+
           color: Colors.white,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0)
@@ -168,20 +226,23 @@ class workItems extends StatelessWidget {
                   title:Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      mainText(data['name'], lightText, 13.0, FontWeight.bold, 1),
-                      mainText(date, lightText, 10.0, FontWeight.normal, 1),
+                      mainText(data['name'], textlight, 13.0, FontWeight.bold, 1),
+                      mainText(date, textlight, 10.0, FontWeight.normal, 1),
                     ],
                   ),
                   onTap: (){
 
                   },
                 ),
-                SizedBox(height: 10.0,),
-                mainText(data['type'], mainColor, 12.0, FontWeight.normal, 1),
-                SizedBox(height: 5.0,),
                 mainTextFAQS(data['title'], darktext, 15.0, FontWeight.normal, 5),
                 SizedBox(height: 5.0,),
-                mainText("Price ₹" + data['price'].toString() + "/-", mainColor, 15.0, FontWeight.normal, 1),
+                Row(
+                  children: [
+                    mainText(data['type'], mainColor, 12.0, FontWeight.normal, 1),
+                    Spacer(),
+                    mainText("Price ₹" + data['price'].toString() + "/-", mainColor, 15.0, FontWeight.normal, 1),
+                  ],
+                ),
                 SizedBox(height: 5.0,),
                 mainTextFAQS(msg, lightText, 15.0, FontWeight.normal, 5),
                 Visibility(

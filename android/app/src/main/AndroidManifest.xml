@@ -18,7 +18,7 @@
     </queries>
 
     <application
-        android:label="likh_bee"
+        android:label="LikhBee"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

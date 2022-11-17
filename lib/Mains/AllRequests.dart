@@ -5,11 +5,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:likh_bee/Auth/OtpLogin.dart';
+import 'package:likh_bee/Chatee/Chat.dart';
 import 'package:likh_bee/Usefull/Avatars.dart';
 import 'package:likh_bee/Usefull/Buttons.dart';
 import 'package:likh_bee/Usefull/Colors.dart';
 import 'package:likh_bee/Usefull/Functions.dart';
 import 'package:likh_bee/Work/OneWork.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:intl/intl.dart';
+
+
 
 late BuildContext mCCts;
 
@@ -47,7 +52,8 @@ class _allRequestsState extends State<allRequests> {
         final data = querySnapshot.docs.map((e) => e.data()).toList();
         if(data.length != 0){
           var d = data[0] as Map<String,dynamic>;
-          var i = requestItems(postData: widget.data, data: d, msg: r[x]['msg']);
+          String dates = DateFormat('EEE dd LLL').format(DateTime.parse(r[x]['date'])).toString();
+          var i = requestItems(postData: widget.data, data: d, msg: r[x]['msg'],date: dates,);
           setState((){
             isHide = false;
             ListRequests.add(i);
@@ -108,13 +114,24 @@ class _allRequestsState extends State<allRequests> {
                   SizedBox(height: 10.0,),
                   mainText("All Requests", darktext, 20.0, FontWeight.normal, 1),
                   SizedBox(height: 10.0,),
-                  Column(
+                  Visibility(
+                      visible: isHide,
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.white,
+                        highlightColor: shimmerColor,
+                        child: Container(
+                          height: MediaQuery.of(context).size.height,
+                          child: ListView.builder(itemBuilder: (_, __) {
+                            return shimmerRequst();
+                          },itemCount: 4,),
+                        ),
+                      )),                  Column(
                     children: ListRequests,
                   ),
                 ],
               ),
             ),
-            loaderss(isHide, context)
+            // loaderss(isHide, context)
           ],
         ),
       ),
@@ -126,7 +143,8 @@ class requestItems extends StatefulWidget {
   Map postData;
   Map data;
   String msg;
-  requestItems({Key? key,required this.postData,required this.data,required this.msg}) : super(key: key);
+  String date;
+  requestItems({Key? key,required this.postData,required this.data,required this.msg,required this.date}) : super(key: key);
 
   @override
   State<requestItems> createState() => _requestItemsState();
@@ -149,11 +167,13 @@ class _requestItemsState extends State<requestItems> {
     if(widget.postData['accept'] != null) {
       var a = widget.postData['accept'] as Map<dynamic, dynamic>;
       var al = a.keys.toList();
-      if (al.contains(user!.uid)) {
+      print(al);
+      if (al.contains(widget.data['uid'])) {
         setState(() {
           setState(() {
             accepted = true;
             mainbg = acceptedColor;
+            print("hello $accepted");
           });
         });
       }
@@ -185,7 +205,7 @@ class _requestItemsState extends State<requestItems> {
                   title:Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      mainText(widget.data['name'], lightText, 13.0, FontWeight.bold, 1),
+                      mainText(widget.data['name'], textlight, 13.0, FontWeight.bold, 1),
                     ],
                   ),
                   trailing: Column(
@@ -198,19 +218,31 @@ class _requestItemsState extends State<requestItems> {
                           }, mains, text),
                       ),
                       Visibility(
-                        visible:accepted,
-                        child: btnsss("Working", () {
-                        }, mainColor, Colors.white),
-                      ),
+                          visible: accepted,
+                          child: btnsss("Working", () {
+                      }, mainColor, Colors.white))
                     ],
                   ),
                   onTap: (){
 
                   },
                 ),
+                Visibility(
+                  visible:accepted,
+                  child: Row(
+                    children: [
+                      btnsss("Chat", () {
+                        navScreen(chat(data: widget.data), context, false);
+                      }, yellowColor, Colors.white),
+                    ],
+                  ),
+                ),
+
                 SizedBox(height: 5.0,),
                 mainTextFAQS("msg : " + widget.msg, textlight, 13.0, FontWeight.normal, 5),
                 SizedBox(height: 5.0,),
+                mainTextFAQS("Wanted By : " + widget.date,yellowColor, 13.0, FontWeight.normal, 5),
+
                 Visibility(
                     visible: isAccept,
                     child: Form(
@@ -271,7 +303,7 @@ class _requestItemsState extends State<requestItems> {
 
   acceptRequest() async{
     User? user = await FirebaseAuth.instance.currentUser;
-    Map<String,dynamic> item = {widget.data['uid']:{'msg':acceptMsg,'phone':user!.phoneNumber}};
+    Map<String,dynamic> item = {widget.data['uid']:{'msg':acceptMsg,'phone':user!.phoneNumber,}};
     var ref = FirebaseDatabase.instance.reference();
     ref.child('works').child(widget.postData['id']).child('accept').update(item).then((value) =>
     {
@@ -284,4 +316,59 @@ class _requestItemsState extends State<requestItems> {
     });
   }
 }
+
+class shimmerRequst extends StatelessWidget {
+  const shimmerRequst({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 5.0,vertical: 5.0),
+      child: GestureDetector(
+        onTap: (){
+          // navScreen(oneWork(data: data), context, false);
+        },
+        child: Card(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0)
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5.0,vertical: 5.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.all(0),
+                  minLeadingWidth: 0,
+                  leading: circleAvatar(index: 2,radius: 20.0,),
+                  title:Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      mainText("", lightText, 13.0, FontWeight.bold, 1),
+                    ],
+                  ),
+                  trailing: Column(
+                    children: [],
+                  ),
+                  onTap: (){
+
+                  },
+                ),
+                SizedBox(height: 5.0,),
+
+                SizedBox(height: 5.0,),
+                mainTextFAQS("", textlight, 13.0, FontWeight.normal, 5),
+                SizedBox(height: 5.0,),
+              ],
+            ),
+          ),
+        ),
+
+      ),
+    );
+
+  }
+}
+
 

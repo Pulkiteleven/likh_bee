@@ -16,6 +16,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:likh_bee/Usefull/Functions.dart';
 import 'package:likh_bee/Work/OneWork.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shimmer/shimmer.dart';
+
 
 
 final _messangerKey = GlobalKey<ScaffoldMessengerState>();
@@ -30,7 +32,7 @@ class homes extends StatefulWidget {
 }
 
 class _homesState extends State<homes> {
-  bool isHide = false;
+  bool isHide = true;
   List<Widget> feature = [];
   User? user = FirebaseAuth.instance.currentUser;
   List<String> categoryList = ['Assignment','Praticals','Engennering Drawing','Diagram'];
@@ -59,8 +61,16 @@ class _homesState extends State<homes> {
     var data = index.snapshot.value as Map<dynamic,dynamic>;
     if(data != null){
       for(var x in data.keys){
-        getWorkswithId(x);
+        getCollege(x);
       }
+    }
+  }
+
+  getCollege(String id) async{
+    var ref = FirebaseDatabase.instance.reference();
+    final index = await ref.child('collegeWork').child(widget.mainData['college']).child(id).once();
+    if(index.snapshot.value != null){
+      getWorkswithId(id);
     }
   }
 
@@ -151,28 +161,6 @@ class _homesState extends State<homes> {
 
                   ],
                 ),
-
-                // SizedBox(height: 15.0,),
-                // Row(
-                //   crossAxisAlignment: CrossAxisAlignment.end,
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     mainTextPop("PAY ", lightColor, 20.0, FontWeight.normal, 1),
-                //     mainTextPop("WRITE ", mainColor, 20.0, FontWeight.normal, 1),
-                //     mainTextPop("and ", lightText, 10.0, FontWeight.normal, 1),
-                //     mainTextPop("HIRE ", acceptedColor, 20.0, FontWeight.normal, 1),
-                //     Spacer(),
-                //   ],
-                // ),
-                // SizedBox(height: 15.0,),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //   children: [
-                //     btnshome("Likh Wa Lo", () { navScreen(alooDart(title: "Browse", bodies: allWork(data: widget.mainData)), context, false);}, mainColor, Colors.white),
-                //     btnshome("Likh Lo", () { navScreen(alooDart(title: "Post", bodies: postWork(data: widget.mainData)), context, false);}, mainColor, Colors.white)
-                //
-                //   ],
-                // ),
                 SizedBox(height: 15.0,),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -191,9 +179,6 @@ class _homesState extends State<homes> {
                       topSlidersItem(colors: item_two_top, title: "Diagram",iconColor: item_two_light, subTitle: "Chalo Diagram bhi bnwa lo", callback: (){
                         navScreen(nayaAloo(title: categoryList[3],data: widget.mainData,), context, false);
                       }),
-                      topSlidersItem(colors: item_four_top, title: "Website",iconColor: item_four_light, subTitle: "Our Website", callback: (){
-                        _launchUrl(url);
-                      }),
                     ],
                   ),
                 ),
@@ -211,6 +196,19 @@ class _homesState extends State<homes> {
 
                   ],
                 ),
+                Visibility(
+                    visible: isHide,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.white,
+                      highlightColor: shimmerColor,
+                      child: Column(
+                        children: [
+                          shimmerItem(),
+                          shimmerItem(),
+                        ],
+                      )
+                    )),
+
                 SizedBox(height: 5.0,),
                 SingleChildScrollView(
                   child: Column(
@@ -234,7 +232,7 @@ class _homesState extends State<homes> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          color:lightColor,
+                          color:yellowColor,
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 5.0,vertical: 30.0),
                             child: Column(
@@ -263,13 +261,13 @@ class _homesState extends State<homes> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          color:lightColor,
+                          color:mainColor,
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 5.0,vertical: 30.0),
                             child: Column(
                               children: [
                                 Icon(
-                                  Icons.category_outlined,color: mainColor,size: 50.0,
+                                  Icons.category_outlined,color: yellowColor,size: 50.0,
                                 ),
                                 SizedBox(height: 15.0,),
                                 mainTextPop("LIKHWAAO", Colors.white, 15.0, FontWeight.bold, 1)
@@ -338,6 +336,7 @@ class _topSlidersItemState extends State<topSlidersItem> {
               height: MediaQuery.of(context).size.width * 0.40,
               child: Card(
                 // margin: EdgeInsets.only(right: 15.0,bottom: 5.0),
+                elevation: 5,
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -357,7 +356,7 @@ class _topSlidersItemState extends State<topSlidersItem> {
             ),
             Container(
                 alignment: Alignment.centerRight,
-                child: Image.asset('Assets/likh.png',color: iconColor,width: 80.0,)),
+                child: Image.asset('Assets/newicon.png',color: iconColor,width: 80.0,)),
           ],
         ),
       ),
@@ -404,18 +403,19 @@ class workItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 5.0,vertical: 5.0),
+      margin: EdgeInsets.symmetric(horizontal: 5.0,vertical: 3.0),
       child: GestureDetector(
         onTap: (){
           navScreen(oneWork(data: data), context, false);
         },
         child: Card(
+          elevation: 5.0,
           color: Colors.white,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0)
+              borderRadius: BorderRadius.circular(20.0)
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.0,vertical: 5.0),
+            padding: EdgeInsets.symmetric(horizontal: 8.0,vertical: 5.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -426,21 +426,25 @@ class workItems extends StatelessWidget {
                   title:Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      mainText(data['name'], lightText, 13.0, FontWeight.bold, 1),
-                      mainText(date, lightText, 10.0, FontWeight.normal, 1),
+                      mainText(data['name'], textlight, 13.0, FontWeight.bold, 1),
+                      mainText(date, textlight, 10.0, FontWeight.normal, 1),
                     ],
                   ),
                   onTap: (){
 
                   },
                 ),
-                SizedBox(height: 10.0,),
-                mainText(data['type'].toString(), mainColor, 12.0, FontWeight.normal, 1),
                 mainTextFAQS(data['title'], darktext, 15.0, FontWeight.normal, 5),
                 SizedBox(height: 5.0,),
                 mainTextFAQS(data['desc'],lightText, 12.0, FontWeight.normal, 5),
                 SizedBox(height: 5.0,),
-                mainText("Price ₹" + data['price'].toString() + "/-", mainColor, 15.0, FontWeight.normal, 1),
+                Row(
+                  children: [
+                    mainText(data['type'].toString(), lightColor, 12.0, FontWeight.normal, 1),
+                    Spacer(),
+                    mainText("Price ₹" + data['price'].toString() + "/-", mainColor, 15.0, FontWeight.normal, 1),
+                  ],
+                ),
                 SizedBox(height: 5.0,),
 
                 Visibility(

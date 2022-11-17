@@ -24,10 +24,11 @@ class _nameState extends State<name> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: bgColor,
+        backgroundColor: yellowColor,
         body: SafeArea(
           child: Stack(
             children: [
+
               SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
                 child: Form(
@@ -46,7 +47,7 @@ class _nameState extends State<name> {
                       SizedBox(
                         height: 15.0,
                       ),
-                      mainText("Enter Your User Name", mainColor, 25.0,
+                      mainText("User Name", mainColor, 25.0,
                           FontWeight.normal, 1),
                       SizedBox(
                         height: 15.0,
@@ -59,21 +60,21 @@ class _nameState extends State<name> {
                           cursorColor: Colors.white,
                           style: TextStyle(
                             fontFamily: 'pop',
-                            fontSize: 15.0,
+                            fontSize: 20.0,
                             color: textColor,
                           ),
                           decoration: InputDecoration(
-                              hintText: "@UserName",
+                              hintText: "@Username",
                               labelStyle: TextStyle(
                                 fontFamily: 'pop',
-                                color: textColor,
+                                color: darkblue,
                               ),
                               errorStyle: TextStyle(
                                   fontFamily: 'pop', color: errorColor),
                               errorBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: errorColor)),
-                              enabledBorder: const UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.white))),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: mainColor))),
                           onChanged: (text) {
                             name = text;
                           },
@@ -96,7 +97,8 @@ class _nameState extends State<name> {
                     Spacer(),
                     btnsss("Next", () { if(formKey.currentState!.validate()){
                       navScreen(city(name: name), context, false);
-                    }}, mainColor, Colors.white)
+                    }}, mainColor, Colors.white),
+                    Spacer(),
                   ],
                 ),
               ),

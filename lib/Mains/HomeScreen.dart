@@ -66,95 +66,122 @@ class _homeScreenState extends State<homeScreen> {
 
   }
 
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        alignment: Alignment.bottomCenter,
+        backgroundColor: yellowColor,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0)
+        ),
+        title: new Text('Are you sure?'),
+        content: new Text('Do you want to exit an App'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('No'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: new Text('Yes'),
+          ),
+        ],
+      ),
+    )) ?? false;
+  }
 
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        key: _key,
-        backgroundColor: bgColor,
-        appBar:AppBar(
-          backgroundColor:Colors.white,
-          leadingWidth: 150.0,
+      home: WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
+          key: _key,
+          backgroundColor: bgColor,
+          appBar:AppBar(
+            backgroundColor:Colors.white,
+            leadingWidth: 150.0,
 
-          leading: Column(
-            children: [
-              Spacer(),
-              Row(
-                children: [
-                  SizedBox(width: 10.0,),
-                  Image.asset('Assets/likh.png',width: 20.0,color: mainColor,),
-                  mainTextPop("LikhBee", mainColor, 15.0, FontWeight.normal, 1),
-                ],
-              ),
-              Spacer(),
+            leading: Column(
+              children: [
+                Spacer(),
+                Row(
+                  children: [
+                    SizedBox(width: 10.0,),
+                    Image.asset('Assets/nlb.png',width: 80.0,),
+                    // mainTextPop("LikhBee", mainColor, 15.0, FontWeight.normal, 1),
+                  ],
+                ),
+                Spacer(),
 
+              ],
+            ),
+
+            actions: [
+              IconButton(onPressed: (){
+
+              }, icon: IconButton(
+                onPressed: (){
+                  navScreen(menu(), context, false);
+                },
+
+                icon: Icon(Icons.sort,color: mainColor,),
+              ))
             ],
           ),
-
-          actions: [
-            IconButton(onPressed: (){
-
-            }, icon: IconButton(
-              onPressed: (){
-                navScreen(menu(), context, false);
-              },
-
-              icon: Icon(Icons.sort,color: mainColor,),
-            ))
-          ],
+          bottomNavigationBar: FlashyTabBar(
+            backgroundColor: Colors.white,
+            onItemSelected: (int val) => setState(() => currentIndex = val),
+            selectedIndex: currentIndex,
+            items: [
+              FlashyTabBarItem(
+                icon: Icon(
+                  Icons.home,
+                  color: mainColor,
+                ),
+                title:
+                mainTextLeft("Home", mainColor, 15.0, FontWeight.normal, 1),
+              ),
+              FlashyTabBarItem(
+                icon: Icon(
+                  Icons.category,
+                  color: mainColor,
+                ),
+                title: mainTextLeft(
+                    "Explore", mainColor, 15.0, FontWeight.normal, 1),
+              ),
+              FlashyTabBarItem(
+                icon: Icon(
+                  Icons.add_box_outlined,
+                  color: mainColor,
+                ),
+                title: mainTextLeft(
+                    "Post", mainColor, 15.0, FontWeight.normal, 1),
+              ),
+              FlashyTabBarItem(
+                icon: Icon(
+                  Icons.request_quote_outlined,
+                  color: mainColor,
+                ),
+                title: mainTextLeft(
+                    "Requests", mainColor, 15.0, FontWeight.normal, 1),
+              ),
+              FlashyTabBarItem(
+                icon: Icon(
+                  Icons.account_circle,
+                  color: mainColor,
+                ),
+                title: mainTextLeft(
+                    "Profile", mainColor, 15.0, FontWeight.normal, 1),
+              ),
+            ],
+          ),
+          body: Padding(
+            padding: EdgeInsets.only(bottom: 0.0),
+           child: bottomItems.elementAt(currentIndex),)
         ),
-        bottomNavigationBar: FlashyTabBar(
-          backgroundColor: Colors.white,
-          onItemSelected: (int val) => setState(() => currentIndex = val),
-          selectedIndex: currentIndex,
-          items: [
-            FlashyTabBarItem(
-              icon: Icon(
-                Icons.home,
-                color: mainColor,
-              ),
-              title:
-              mainTextLeft("Home", mainColor, 15.0, FontWeight.normal, 1),
-            ),
-            FlashyTabBarItem(
-              icon: Icon(
-                Icons.category,
-                color: mainColor,
-              ),
-              title: mainTextLeft(
-                  "Explore", mainColor, 15.0, FontWeight.normal, 1),
-            ),
-            FlashyTabBarItem(
-              icon: Icon(
-                Icons.add_box_outlined,
-                color: mainColor,
-              ),
-              title: mainTextLeft(
-                  "Post", mainColor, 15.0, FontWeight.normal, 1),
-            ),
-            FlashyTabBarItem(
-              icon: Icon(
-                Icons.request_quote_outlined,
-                color: mainColor,
-              ),
-              title: mainTextLeft(
-                  "Requests", mainColor, 15.0, FontWeight.normal, 1),
-            ),
-            FlashyTabBarItem(
-              icon: Icon(
-                Icons.account_circle,
-                color: mainColor,
-              ),
-              title: mainTextLeft(
-                  "Profile", mainColor, 15.0, FontWeight.normal, 1),
-            ),
-          ],
-        ),
-        body: Padding(
-          padding: EdgeInsets.only(bottom: 0.0),
-         child: bottomItems.elementAt(currentIndex),)
       ),
     );
   }

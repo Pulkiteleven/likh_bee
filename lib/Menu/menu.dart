@@ -20,6 +20,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:likh_bee/Usefull/Functions.dart';
 import 'package:likh_bee/Work/OneWork.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 
 
 
@@ -78,9 +79,9 @@ class _menuState extends State<menu> {
                   ListTile(
                     leading: Icon(
                       Icons.info_outline,
-                      color: textlight,
+                      color: mainColor,
                     ),
-                    title: mainText("About US", textlight, 15.0, FontWeight.normal, 1),
+                    title: mainText("About US", darktext, 15.0, FontWeight.normal, 1),
                     onTap: (){
                       navScreen(aboutUs(), context, false);
                     },
@@ -90,9 +91,9 @@ class _menuState extends State<menu> {
                   ListTile(
                     leading: Icon(
                       Icons.people_alt_outlined,
-                      color: textlight,
+                      color: mainColor,
                     ),
-                    title: mainText("Our Team", textlight, 15.0, FontWeight.normal, 1),
+                    title: mainText("Our Team", darktext, 15.0, FontWeight.normal, 1),
                     onTap: (){
                       navScreen(OurTeam(), context, false);
 
@@ -102,10 +103,10 @@ class _menuState extends State<menu> {
 
                   ListTile(
                     leading: Icon(
-                      Icons.web,
-                      color: textlight,
+                      Icons.privacy_tip_outlined,
+                      color: mainColor,
                     ),
-                    title: mainText("Our Website", textlight, 15.0, FontWeight.normal, 1),
+                    title: mainText("Privacy Policy", darktext, 15.0, FontWeight.normal, 1),
                     onTap: (){
                       _launchUrl(url);
                     },
@@ -114,28 +115,44 @@ class _menuState extends State<menu> {
 
                   ListTile(
                     leading: Icon(
-                      Icons.query_builder,
-                      color: textlight,
+                      Icons.share,
+                      color: mainColor,
                     ),
-                    title: mainText("Raise a Query", textlight, 15.0, FontWeight.normal, 1),
+                    title: mainText("Share", darktext, 15.0, FontWeight.normal, 1),
                     onTap: (){
-                      navScreen(query(), context, false);
+                      Share.share("So let me recommend this app \n"
+                          "LikhBee to make your work easier\n"
+                          "https://play.google.com/store/apps/details?id=com.inertia.likh_bee&hl=en&gl=US",
+                        subject: "LikhBee - Pay Write and Hire"
+                      );
                     },
                   ),
-
-
                   SizedBox(height: 10.0,),
 
                   ListTile(
                     leading: Icon(
-                      Icons.logout,
-                      color: textlight,
+                      Icons.star_rate_outlined,
+                      color: mainColor,
                     ),
-                    title: mainText("Logout", textlight, 15.0, FontWeight.normal, 1),
+                    title: mainText("Share", darktext, 15.0, FontWeight.normal, 1),
                     onTap: (){
-                      FirebaseAuth.instance.signOut().then((value) => {
-                        navScreen(otpLogin(), context, true),
-                      });
+                      _launchUrl("https://play.google.com/store/apps/details?id=com.inertia.likh_bee&hl=en&gl=US");
+                    },
+                  ),
+                  SizedBox(height: 10.0,),
+
+
+                  ListTile(
+                    leading: Icon(
+                      Icons.logout,
+                      color:mainColor,
+                    ),
+                    title: mainText("Logout", darktext, 15.0, FontWeight.normal, 1),
+                    onTap: (){
+                      // FirebaseAuth.instance.signOut().then((value) => {
+                      //   navScreen(otpLogin(), context, true),
+                      // });
+                      showit();
                     },
                   ),
                   SizedBox(height: 10.0,),
@@ -149,6 +166,30 @@ class _menuState extends State<menu> {
         ),
       ),
     );
+  }
+
+  Future<bool> showit() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('Logout'),
+        content: new Text('Do you want to Logout'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('No'),
+          ),
+          TextButton(
+            onPressed: () =>  FirebaseAuth.instance.signOut().then((value) => {
+            Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) =>
+            otpLogin()), (Route<dynamic> route) => false),
+            }),
+            child: new Text('Yes'),
+          ),
+        ],
+      ),
+    )) ?? false;
   }
 
   Future<void> _launchUrl(String _url) async {

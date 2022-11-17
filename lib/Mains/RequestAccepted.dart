@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:likh_bee/Auth/OtpLogin.dart';
+import 'package:likh_bee/Chatee/Chat.dart';
 import 'package:likh_bee/Usefull/Avatars.dart';
 import 'package:likh_bee/Usefull/Buttons.dart';
 import 'package:likh_bee/Usefull/Colors.dart';
@@ -137,11 +138,9 @@ class _requestAcceptedState extends State<requestAccepted> {
                   SizedBox(height: 10.0,),
                   Row(
                     children: [
-                      mainTextFAQS(widget.data['accept'][user!.uid]['phone'], mainColor, 17.0,
-                          FontWeight.normal, 1),
+                      mainText("Message", mainColor, 15.0, FontWeight.normal, 1),
                       Spacer(),
-                      btnsss("Call", () { _launchCaller(widget.data['accept'][user!.uid]['phone']);}, mainColor, Colors.white),
-
+                      btnsss("Chat", () {navScreen(chat(data: {'name':widget.data['name'],'uid':widget.data['from'],'index':widget.data['index']}), context,false); }, yellowColor, Colors.white),
                     ],
                   ),
                   SizedBox(

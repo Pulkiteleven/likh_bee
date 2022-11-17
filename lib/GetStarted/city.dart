@@ -82,7 +82,7 @@ class _cityState extends State<city> {
                       SizedBox(
                         height: 15.0,
                       ),
-                      mainText("Select Your City", mainColor, 25.0,
+                      mainText("Select Your City", yellowColor, 25.0,
                           FontWeight.normal, 1),
                       SizedBox(
                         height: 15.0,

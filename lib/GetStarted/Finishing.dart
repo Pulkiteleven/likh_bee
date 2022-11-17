@@ -32,20 +32,10 @@ class _FinishingState extends State<Finishing> {
   int imagesIndex = 0;
   List<Widget> citiesItems = [];
   List<dynamic> citiesNames = [];
-  List<String> avartsTitle = [
-    'avatars/f1.png',
-    'avatars/f2.png',
-    'avatars/f3.png',
-    'avatars/m1.png',
-    'avatars/m2.png',
-    'avatars/m3.png',
-  ];
+
 
   @override
   void initState() {
-    setState((){
-      imagesS = avartsTitle[0];
-    });
     print(widget.data);
   }
 

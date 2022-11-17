@@ -51,8 +51,17 @@ class _nayaAlooState extends State<nayaAloo> {
     var data = index.snapshot.value as Map<dynamic,dynamic>;
     if(data != null){
       for(var x in data.keys){
-        getWorkswithId(x);
+        getCollege(x);
       }
+    }
+  }
+  
+  getCollege(String id) async{
+    var ref = FirebaseDatabase.instance.reference();
+    final index = await ref.child('collegeWork').child(widget.data['college']).child(id).once();
+    print("Hello" + index.snapshot.value.toString());
+    if(index.snapshot.value != null){
+      getWorkswithId(id);
     }
   }
 

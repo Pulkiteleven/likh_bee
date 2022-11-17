@@ -10,6 +10,7 @@ import 'package:likh_bee/Usefull/Buttons.dart';
 import 'package:likh_bee/Usefull/Colors.dart';
 import 'package:likh_bee/Usefull/Functions.dart';
 
+
 final _messangerKey = GlobalKey<ScaffoldMessengerState>();
 
 
@@ -33,8 +34,8 @@ class _postWorkState extends State<postWork> {
   String category = "";
   late BuildContext mCtx;
 
-  List<Color> selectedC = [Colors.white,Colors.white,Colors.white,Colors.white];
-  List<Color> textC = [mainColor,mainColor,mainColor,mainColor];
+  List<Color> selectedC = [mainColor,mainColor,mainColor,mainColor];
+  List<Color> textC = [yellowColor,yellowColor,yellowColor,yellowColor];
   List<String> categoryList = ['Assignment','Praticals','Engennering Drawing','Diagram'];
 
   FirebaseAuth user = FirebaseAuth.instance;
@@ -278,11 +279,11 @@ class _postWorkState extends State<postWork> {
   changeColor(int index){
     setState((){
       Cselected = true;
-      selectedC = [Colors.white,Colors.white,Colors.white,Colors.white];
-      textC = [mainColor,mainColor,mainColor,mainColor];
+      selectedC = [mainColor,mainColor,mainColor,mainColor];
+      textC = [yellowColor,yellowColor,yellowColor,yellowColor];
 
-      selectedC[index] = mainColor;
-      textC[index] = Colors.white;
+      selectedC[index] = yellowColor;
+      textC[index] = mainColor;
       category = categoryList[index];
     });
 

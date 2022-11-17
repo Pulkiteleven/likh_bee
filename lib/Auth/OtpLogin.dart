@@ -7,6 +7,7 @@ import 'package:likh_bee/Backend/backend.dart';
 import 'package:likh_bee/Usefull/Buttons.dart';
 import 'package:sms_otp_auto_verify/sms_otp_auto_verify.dart';
 import 'dart:async';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
 
 
@@ -36,6 +37,8 @@ class _enterOtpState extends State<enterOtp> {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   bool isHide = false;
+
+  late BuildContext mCtx;
 
 
 
@@ -117,6 +120,9 @@ class _enterOtpState extends State<enterOtp> {
 
   @override
   Widget build(BuildContext context) {
+
+    mCtx = context;
+
     return MaterialApp(
       key: _messangerKey,
       home: Scaffold(
@@ -128,10 +134,9 @@ class _enterOtpState extends State<enterOtp> {
               height: MediaQuery.of(context).size.height * 0.35,
               color: mainColor,
               child: Image.asset(
-                'Assets/likh.png',
-                width: 20.0,
-                scale: 4.0,
-                color: Colors.white,
+                'Assets/nnlb.png',
+                width: 40.0,
+                scale: 5,
               ),
             ),
 
@@ -141,7 +146,7 @@ class _enterOtpState extends State<enterOtp> {
                   Container(
                     width:MediaQuery.of(context).size.width,
                     margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.28),
-                    padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 10.0,vertical: 20.0),
                     child: Card(
                         elevation: 3.0,
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
@@ -161,29 +166,21 @@ class _enterOtpState extends State<enterOtp> {
                                     SizedBox(height: 15.0,),
                                     Padding(
                                       padding: EdgeInsets.symmetric(horizontal: 15.0,vertical: 0.0),
-                                      child: TextFieldPin(
-                                        textController: textEditingController,
-                                        autoFocus: true,
-                                        codeLength: _otpCodeLength,
-                                        alignment: MainAxisAlignment.center,
-                                        defaultBoxSize: 33.0,
-                                        margin: 5,
-                                        selectedBoxSize: 33.0,
+                                      child: OtpTextField(
+                                        numberOfFields: 6,
+                                        borderColor: mainColor,
+                                        disabledBorderColor: darkblue,
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        showFieldAsBox: false,
                                         textStyle: TextStyle(
-                                          fontFamily: 'pop',
-                                          fontSize: 15.0,
-                                          color: darktext,
+                                            color: darkblue
                                         ),
-                                        defaultDecoration: _pinPutDecoration.copyWith(
-                                            border: Border.all(
-                                                color: Theme.of(context)
-                                                    .primaryColor
-                                                    .withOpacity(0.6))),
-                                        selectedDecoration: _pinPutDecoration,
-                                        onChange:(code){
-                                          _onOtpCallBack(code, false);
-                                    },
-                                      )
+                                        onSubmit: (String value){
+                                          _otpCode = value;
+                                        },
+
+
+                                      ),
                                     ),
                                   ],
                                 )
@@ -196,13 +193,13 @@ class _enterOtpState extends State<enterOtp> {
 
 
                   SizedBox(height: 20.0,),
-                  btnsss("LOGIN NOW", () { LoginwithOTP();}, mainColor, Colors.white),
+                  btnsss("LOGIN NOW", () { LoginwithOTP();}, mainColor, yellowColor),
                   SizedBox(height: 15.0,),
                   Row(
                     children: [
                       Spacer(),
-                      mainText("Pay Write ", darktext, 13.0, FontWeight.normal, 1,),
-                      mainText("and Hire", mainColor, 13.0, FontWeight.normal, 1,),
+                      mainText("Pay Write ", darkblue, 13.0, FontWeight.normal, 1,),
+                      mainText("and Hire", yellowColor, 13.0, FontWeight.normal, 1,),
 
                       Spacer(),
                     ],
@@ -232,7 +229,10 @@ class _enterOtpState extends State<enterOtp> {
       checker(context),
       print("ho gya")
     }).catchError((e){
-      Snacker("Something Went Wrong", _messangerKey);
+      snacker("Something Went Wrong", mCtx);
+      setState((){
+        isHide = false;
+      });
     });
     // if(formKey.currentState!.validate()){
     //   setState((){

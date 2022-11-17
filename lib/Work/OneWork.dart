@@ -9,6 +9,8 @@ import 'package:likh_bee/Usefull/Avatars.dart';
 import 'package:likh_bee/Usefull/Buttons.dart';
 import 'package:likh_bee/Usefull/Colors.dart';
 import 'package:likh_bee/Usefull/Functions.dart';
+import 'package:intl/intl.dart';
+
 
 class oneWork extends StatefulWidget {
   Map data;
@@ -26,11 +28,16 @@ class _oneWorkState extends State<oneWork> {
   String msg = "";
   final formkey = GlobalKey<FormState>();
   late BuildContext mCtx;
+  String dateBy = "";
+  String timeBy = "";
+  DateTime now = DateTime.now();
 
   @override
   void initState() {
     setState(() {
       date = getDate(widget.data['date']);
+      dateBy = DateFormat('EEE dd LLL').format(now);
+
     });
   }
 
@@ -131,19 +138,8 @@ class _oneWorkState extends State<oneWork> {
                   btnsss("Likh Bee", () {
                     popUp();
                   }, lightColor, Colors.white),
-                ],
-              ),
-            ),
-            Visibility(
-                visible: sendmsg,
-                child: Column(
-                  children: [
-                    Spacer(),
-                    Container(
-                      alignment: Alignment.center,
-                      height: MediaQuery.of(context).size.height * 0.30,
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0),
+                  Visibility(
+                      visible: sendmsg,
                       child: Card(
                         elevation: 5.0,
                         color: Colors.white,
@@ -152,7 +148,6 @@ class _oneWorkState extends State<oneWork> {
                         ),
                         child: Column(
                           children: [
-                            Spacer(),
                             Padding(
                               padding: EdgeInsets.symmetric(
                                   horizontal: 5.0, vertical: 5.0),
@@ -198,6 +193,17 @@ class _oneWorkState extends State<oneWork> {
                                         }
                                       },
                                     ),
+                                    SizedBox(height: 5.0),
+                                    mainText("You want this work done by", darktext, 15.0,
+                                        FontWeight.normal, 1),
+                                    SizedBox(height: 5.0,),
+                                    Row(
+                                      children: [
+                                        btnsss(dateBy, () { getDateBy();}, yellowColor, Colors.white),
+                                        SizedBox(width: 3.0,),
+
+                                      ],
+                                    ),
                                     SizedBox(
                                       height: 5.0,
                                     ),
@@ -213,19 +219,30 @@ class _oneWorkState extends State<oneWork> {
                                 )),
                               ),
                             ),
-                            Spacer(),
                           ],
                         ),
-                      ),
-                    ),
-                    Spacer(),
-                  ],
-                )),
+                      )),
+                ],
+              ),
+            ),
             loaderss(isHide, context)
           ],
         ),
       ),
     );
+  }
+
+  getDateBy() async{
+    var pickedDate = (await showDatePicker(context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(2100)));
+    if(pickedDate != null){
+      setState((){
+        now = pickedDate;
+        dateBy = DateFormat('EEE dd LLL').format(pickedDate);
+      });
+    }
   }
 
   popUp() {
@@ -241,7 +258,7 @@ class _oneWorkState extends State<oneWork> {
       });
       User? user = FirebaseAuth.instance.currentUser;
       Map<String, dynamic> item = {
-        user!.uid.toString(): {'msg': msg}
+        user!.uid.toString(): {'msg': msg,'time':now.toString()}
       };
       var ref = FirebaseDatabase.instance.reference();
       ref
@@ -250,17 +267,17 @@ class _oneWorkState extends State<oneWork> {
           .child('requests')
           .update(item)
           .then((value) => {
-            saveRequest(widget.data['id'], msg)
+            saveRequest(widget.data['id'], msg,now)
       });
     }
   }
 
-  saveRequest(String workid, String msg) {
+  saveRequest(String workid, String msg,DateTime times) {
     var ref = FirebaseDatabase.instance.reference();
     User? user = FirebaseAuth.instance.currentUser;
 
     Map<String, dynamic> item = {
-      workid: {'msg': msg,}
+      workid: {'msg': msg,'date':times.toString()}
     };
 
     ref.child('userRequests').child(user!.uid).update(item).then((value) => {

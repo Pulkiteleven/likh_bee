@@ -11,21 +11,63 @@ import 'package:likh_bee/Usefull/Avatars.dart';
 import 'package:likh_bee/Usefull/Buttons.dart';
 import 'package:likh_bee/Usefull/Colors.dart';
 import 'package:likh_bee/Usefull/Functions.dart';
+import 'package:shimmer/shimmer.dart';
+
+import 'AllWork.dart';
+
+late BuildContext mCtx;
+late _profileState stateOfProfile;
 
 class profile extends StatefulWidget {
   Map data;
   profile({Key? key,required this.data}) : super(key: key);
 
   @override
-  State<profile> createState() => _profileState();
+  State<profile> createState() {
+    stateOfProfile = _profileState();
+    return stateOfProfile;
+  }
 }
 
 class _profileState extends State<profile> {
   bool isHide = false;
   List<Widget> myWorks = [];
-  bool isMywork = false;
+  bool isMywork = true;
   User? user = FirebaseAuth.instance.currentUser;
 
+  showit(String id) async{
+    await showDialog(
+      context: context,
+      builder: (context) => Container(
+        child: new AlertDialog(
+          alignment: Alignment.bottomCenter,
+
+          backgroundColor: yellowColor,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0)
+          ),
+          title: new Text('Are you sure?'),
+          content: new Text('You Want to Remove this Work'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: new Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                FirebaseDatabase.instance.reference().child("works").child(id).remove()
+                    .then((value) => {
+                      getMyWork(),
+                  Navigator.of(context).pop(false)
+                });
+              },
+              child: new Text('Yes'),
+            ),
+          ],
+        ),
+      ),
+    );
+}
 
   @override
   void initState() {
@@ -34,6 +76,7 @@ class _profileState extends State<profile> {
 
   getMyWork() async{
     setState((){
+      isMywork = true;
     });
     var ref = await FirebaseDatabase.instance.reference().child('userWork').child(user!.uid);
     await ref.onValue.listen((event) async{
@@ -72,6 +115,7 @@ class _profileState extends State<profile> {
         myWorks.add(i);
         setState((){
           isMywork = false;
+          isHide = false;
         });
       });
     }
@@ -80,6 +124,9 @@ class _profileState extends State<profile> {
 
   @override
   Widget build(BuildContext context) {
+
+    mCtx = context;
+
     return Scaffold(
       backgroundColor: bgColor,
       body: Stack(
@@ -117,6 +164,19 @@ class _profileState extends State<profile> {
                   ],
                 ),
                 SizedBox(height: 10.0,),
+                Visibility(
+                    visible: isMywork,
+                    child: Shimmer.fromColors(
+                      baseColor: Colors.white,
+                      highlightColor: shimmerColor,
+                      child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        child: ListView.builder(itemBuilder: (_, __) {
+                          return shimmerItem();
+                        },itemCount: 2,),
+                      ),
+                    )),
+
                 Stack(
                   children: [
                     SingleChildScrollView(
@@ -181,6 +241,7 @@ class workItems extends StatelessWidget {
           // navScreen(oneWork(data: data), context, false);
         },
         child: Card(
+          elevation: 5.0,
           color: Colors.white,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0)
@@ -197,22 +258,28 @@ class workItems extends StatelessWidget {
                   title:Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      mainText(data['name'], lightText, 13.0, FontWeight.bold, 1),
-                      mainText(date, lightText, 10.0, FontWeight.normal, 1),
+                      mainText(data['name'], textlight, 13.0, FontWeight.bold, 1),
+                      mainText(date, textlight, 10.0, FontWeight.normal, 1),
                     ],
                   ),
                   onTap: (){
 
                   },
                 ),
-                SizedBox(height: 10.0,),
                 mainTextFAQS(data['title'], darktext, 15.0, FontWeight.normal, 5),
-                SizedBox(height: 5.0,),
-                mainText("Price ₹" + data['price'].toString() + "/-", mainColor, 15.0, FontWeight.normal, 1),
                 SizedBox(height: 5.0,),
                 Row(
                   children: [
-                    btnsss(data['type'], () { }, mainColor, Colors.white),
+                    mainText(data['type'].toString(), lightColor, 12.0,
+                        FontWeight.normal, 1),
+                    Spacer(),
+                    mainText("Price ₹" + data['price'].toString() + "/-",
+                        mainColor, 15.0, FontWeight.normal, 1),
+                  ],
+                ),                SizedBox(height: 5.0,),
+                Row(
+                  children: [
+                    btnsss("Delete", () { stateOfProfile.showit(data['id']);}, yellowColor, Colors.white),
                     Spacer(),
                     Visibility(
                         visible: req,
@@ -230,5 +297,8 @@ class workItems extends StatelessWidget {
       ),
     );
   }
+
 }
+
+
 
